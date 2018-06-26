@@ -87,3 +87,74 @@ def testingNB():
     testWord=['stupid','garbage']
     testVec=setOfWordsToVec(vocabList,testWord)
     print('测试向量\"stupid garbage"分类为',classifyNB(testVec,p0Con,p1Con,p1))
+    
+import re
+
+def textSplit(data):
+    regEx=re.compile('\\W*')
+    returnData=regEx.split(data)
+    return [word.lower() for word in returnData if len(word)>2 ]
+#    return returnData
+def crossViolation():
+    dataSet=[];labelList=[];#inPut=[]
+    for i in range(1,26):
+        returnList=textSplit(open('email/spam/%d.txt' %i).read())
+        dataSet.append(returnList)
+        labelList.append(1)
+        returnList=textSplit(open('email/ham/%d.txt' %i).read())
+        dataSet.append(returnList)
+        labelList.append(0)
+    vocabList=createVocabList(dataSet)
+    trainSet=[]
+    for i in range(50):
+        trainSet.append(i)
+    testSet=[]
+    for i in range(10):
+        rand=int(np.random.uniform(0,len(trainSet)))
+        testSet.append(trainSet[rand])
+        del(trainSet[rand])
+    trainMat=[]
+    trainLabel=[]
+    for i in trainSet:
+        trainMat.append(setOfWordsToVec(vocabList,dataSet[i]))
+        trainLabel.append(labelList[i])
+    p1V,p0V,pSpam=trainBayes(trainMat,trainLabel)
+    print(p0V,p1V,pSpam)
+    errorCount=0
+    for i in testSet:
+        
+        if classifyNB(setOfWordsToVec(vocabList,dataSet[i]),p0V,p1V,pSpam)!=labelList[i]:
+            errorCount+=1
+    print('错误率为：',float(errorCount/len(testSet)))
+
+#import operator
+from collections import Counter
+
+def calMost(fullText):
+    counter=Counter(fullText)
+    counterWords=counter.most_common(30)
+    most30Words=[]
+    for i in range(30):
+        most30Words.append(counterWords[i][0])
+    return
+import feedparser
+def localWords(Rss1,Rss0):
+    dataSet=[]
+    fullText=[]
+    labelList=[]
+    minLen=min(len(Rss1['entries']),len(Rss0['entries']))
+    for i in range(minLen):
+        dataSet.append(Rss1['entries'][i]['summary'])
+        fullText.extend(Rss1['entries'][i]['summary'])
+        labelList.append(1)
+        dataSet.append(Rss0['entries'][i]['summary'])
+        fullText.extend(Rss0['entries'][i]['summary'])
+        labelList.append(0)
+    vocabList=createVocabList(dataSet)
+    most30Words=calMost(fullText)
+    
+        
+        
+        
+
+
