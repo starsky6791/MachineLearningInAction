@@ -136,7 +136,7 @@ def calMost(fullText):
     most30Words=[]
     for i in range(30):
         most30Words.append(counterWords[i][0])
-    return
+    return most30Words
 import feedparser
 def localWords(Rss1,Rss0):
     dataSet=[]
@@ -152,6 +152,24 @@ def localWords(Rss1,Rss0):
         labelList.append(0)
     vocabList=createVocabList(dataSet)
     most30Words=calMost(fullText)
+    for word in most30Words:
+        vocabList.remove(word)
+    trainingSet=range(2*minLen)
+    testSet=[]
+    for i in range(20):
+        ranIndex=int(np.random.uniform(0,len(trainingSet)))
+        testSet.append(trainingSet[ranIndex])
+        del(trainingSet[ranIndex])
+    trainMat=[]
+    trainLable=[]
+    for i in trainingSet:
+        trainMat.append(setOfWordsToVec(vocabList,dataSet[i]))
+        trainLable.append(labelList[i])
+    p1V,p0V,p1=trainBayes(trainMat,trainLable)
+    errorCount=-0
+    for i in testSet:
+        result=
+        
     
         
         
