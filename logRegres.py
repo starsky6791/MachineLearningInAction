@@ -18,4 +18,86 @@ def loadDataSet():
 def sigmoid(x):
     return 1/(1+np.exp(-x))
 
-def gradDes(inputSet) 
+def grads(inputSet,labelList):
+    dataMat=np.mat(inputSet)
+    labelMat=np.mat(labelList).transpose()
+    m,n=np.shape(dataMat)
+    alpha=0.001
+    iterNum=500
+    weights=np.ones((n,1))
+    for i in range(iterNum):
+        h=sigmoid(dataMat*weights)
+        costFunction=labelMat-h
+        weights=weights+alpha*dataMat.transpose()*costFunction
+    return weights
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
